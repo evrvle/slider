@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f8f9fa;
+        }
+
+        .slider-container {
+            width: 50vw; /* Set width to 50% of the viewport width */
+            height: 50vh; /* Set height to 50% of the viewport height */
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #ccc; /* Optional border for better visibility */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+            display: flex; /* Flexbox to center content */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+        }
+
+        .slider-image {
+            width: 100%; /* Full width of the container */
+            height: auto; /* Maintain aspect ratio */
+            display: none; /* Hide all images initially */
+        }
+
+        .slider-image.active {
+            display: block; /* Show the active image */
+        }
+
+        .nav-buttons {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+
+        .nav-buttons button {
+            background-color: rgba(255, 255, 255, 0.8);
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .indicators {
+    position: absolute; /* Position indicators absolutely */
+    bottom: 10px; /* Distance from the bottom */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for centering */
+    text-align: center;
+}
+
+        .indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin: 0 5px;
+            border-radius: 50%;
+            background-color: #ccc;
+            cursor:pointer; 
+        }
+
+        .indicator.active {
+            background-color:#007bff; /* Active indicator color */
+        }
+    </style>
+</head>
+<body>
+    <div class="slider-container">
+        <img src="https://i.pinimg.com/564x/d0/68/2a/d0682aa8a377e37b9f83fccac4a11f49.jpg" alt="image 1" class="slider-image active">
+        <img src="https://i.pinimg.com/564x/37/4b/e8/374be8d321af2a06af4a870878097722.jpg" alt="image 2" class="slider-image">
+        <img src="https://i.pinimg.com/564x/83/89/20/8389203518b0328064301b3e6b1b44ed.jpg" alt="image 3" class="slider-image">
+
+        <div class="nav-buttons">
+            <button id="prevBtn">Prev</button>
+            <button id="nextBtn">Next</button>
+        </div>
+
+        <div class="indicators">
+            <span class="indicator active" data-index="0"></span>
+            <span class="indicator" data-index="1"></span>
+            <span class="indicator" data-index="2"></span>
+        </div>
+
+        <script>
+
+            const images = document.querySelectorAll('.slider-image');
+            const indicators = document.querySelectorAll('.indicator');
+            let currentIndex = 0;
+
+            function showImage(index) {
+                images.forEach((img, i) => {
+                    img.classList.remove('active');
+                    indicators[i].classList.remove('active')
+
+                    if (i === index) {
+                        img.classList.add('active');
+                        indicators[i].classList.add('active');
+                    }
+                })
+            }
+
+            document.getElementById('prevBtn').addEventListener('click', () => {
+                currentIndex = (currentIndex - 1 + images.length) % images.length;
+                showImage(currentIndex)
+            })
+
+            document.getElementById('nextBtn').addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % images.length;
+                showImage(currentIndex)
+            })
+
+            indicators.forEach(indicator => {
+                indicator.addEventListener('click', e => {
+                    currentIndex = parseInt(e.target.dataset.index);
+                    showImage(currentIndex)
+                })
+            })
+
+        </script>
+    </div>
+</body>
+</html>
